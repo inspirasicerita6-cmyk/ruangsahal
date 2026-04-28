@@ -211,13 +211,12 @@
         // FUNGSI FOTO QUOTES
         async function captureQuote(isi, penulis, tanggal) {
             const area = document.getElementById('hidden-canvas-area');
+            // Cetakan di bawah ini sudah dihapus tanggalnya & disamakan desain font/garis hijaunya
             area.innerHTML = `
-                <div id="capture-box" style="width: 600px; padding: 60px; background: white; border: 1px solid #eee; border-radius: 40px; text-align: center; font-family: sans-serif; position: relative;">
-                    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 12px; background: #10b981; border-radius: 40px 0 0 40px;"></div>
-                    <div style="color: #10b981; font-size: 60px; font-weight: bold;">"</div>
-                    <h1 style="font-size: 32px; font-weight: bold; color: #333; line-height: 1.5; margin-bottom: 30px;">${isi}</h1>
-                    <p style="color: #999; font-weight: bold; letter-spacing: 1px;">— ${penulis} —</p>
-                    <div style="margin-top: 30px;"><span style="background: #f0fdf4; color: #10b981; padding: 10px 20px; border-radius: 99px; font-weight: bold; font-size: 14px;">${tanggal}</span></div>
+                <div id="capture-box" style="width: 600px; padding: 60px; background: white; border-radius: 24px; text-align: center; font-family: 'Inter', sans-serif; border-left: 12px solid #10b981; box-sizing: border-box; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                    <div style="color: #10b981; font-size: 72px; font-weight: bold; line-height: 1; margin-bottom: 10px; font-family: sans-serif;">"</div>
+                    <h1 style="font-size: 28px; font-weight: bold; color: #1f2937; line-height: 1.6; margin-bottom: 30px; margin-top: 0;">${isi}</h1>
+                    <p style="color: #9ca3af; font-weight: bold; font-size: 18px; letter-spacing: 1px; margin: 0;">— ${penulis} —</p>
                 </div>
             `;
             const canvas = await html2canvas(document.getElementById('capture-box'), { scale: 2 });
