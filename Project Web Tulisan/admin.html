@@ -211,10 +211,10 @@
         // FUNGSI FOTO QUOTES
         async function captureQuote(isi, penulis, tanggal) {
             const area = document.getElementById('hidden-canvas-area');
-            // Cetakan di bawah ini sudah dihapus tanggalnya & disamakan desain font/garis hijaunya
+            // Mengubah karakter petik lurus menjadi petik lengkung tipografi ( “ ) dan font menjadi serif
             area.innerHTML = `
                 <div id="capture-box" style="width: 600px; padding: 60px; background: white; border-radius: 24px; text-align: center; font-family: 'Inter', sans-serif; border-left: 12px solid #10b981; box-sizing: border-box; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
-                    <div style="color: #10b981; font-size: 72px; font-weight: bold; line-height: 1; margin-bottom: 10px; font-family: sans-serif;">"</div>
+                    <div style="color: #10b981; font-size: 80px; font-weight: bold; line-height: 0.8; margin-bottom: 20px; font-family: 'Playfair Display', Georgia, serif;">“</div>
                     <h1 style="font-size: 28px; font-weight: bold; color: #1f2937; line-height: 1.6; margin-bottom: 30px; margin-top: 0;">${isi}</h1>
                     <p style="color: #9ca3af; font-weight: bold; font-size: 18px; letter-spacing: 1px; margin: 0;">— ${penulis} —</p>
                 </div>
