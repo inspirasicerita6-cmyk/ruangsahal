@@ -211,12 +211,14 @@
         // FUNGSI FOTO QUOTES
         async function captureQuote(isi, penulis, tanggal) {
             const area = document.getElementById('hidden-canvas-area');
-            // Mengubah karakter petik lurus menjadi petik lengkung tipografi ( “ ) dan font menjadi serif
+            // Menggunakan Ikon Vektor (SVG) persis seperti desain asli
             area.innerHTML = `
-                <div id="capture-box" style="width: 600px; padding: 60px; background: white; border-radius: 24px; text-align: center; font-family: 'Inter', sans-serif; border-left: 12px solid #10b981; box-sizing: border-box; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
-                    <div style="color: #10b981; font-size: 80px; font-weight: bold; line-height: 0.8; margin-bottom: 20px; font-family: 'Playfair Display', Georgia, serif;">“</div>
-                    <h1 style="font-size: 28px; font-weight: bold; color: #1f2937; line-height: 1.6; margin-bottom: 30px; margin-top: 0;">${isi}</h1>
-                    <p style="color: #9ca3af; font-weight: bold; font-size: 18px; letter-spacing: 1px; margin: 0;">— ${penulis} —</p>
+                <div id="capture-box" style="width: 600px; padding: 50px 60px; background: white; border-radius: 20px; text-align: center; font-family: 'Inter', sans-serif; border-left: 14px solid #10b981; box-sizing: border-box; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); position: relative;">
+                    <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+                        <svg fill="#a7f3d0" width="70px" height="70px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M464 256h-80v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160 71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6 0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48z"/></svg>
+                    </div>
+                    <h1 style="font-size: 26px; font-weight: 600; color: #1f2937; line-height: 1.6; margin-bottom: 30px; margin-top: 0;">${isi}</h1>
+                    <p style="color: #9ca3af; font-weight: 600; font-size: 18px; letter-spacing: 1px; margin: 0;">— ${penulis} —</p>
                 </div>
             `;
             const canvas = await html2canvas(document.getElementById('capture-box'), { scale: 2 });
