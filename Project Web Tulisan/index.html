@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruang Sahal - Tempat Berbagi Ilmu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #333; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .text-primary { color: #10b981; }
+        .bg-primary { background-color: #10b981; }
+        .btn-admin { background-color: #10b981; transition: all 0.3s ease; }
+        .btn-admin:hover { background-color: #059669; transform: translateY(-1px); }
+        .article-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .article-card:hover { border-color: #10b981; transform: translateY(-4px); }
+        .filter-btn { transition: all 0.2s ease; }
+        .filter-btn.active { background-color: #10b981; color: white; border-color: #10b981; }
+        #login-modal { transition: opacity 0.3s ease, visibility 0.3s ease; }
+        #login-modal.hidden { opacity: 0; visibility: hidden; display: none; }
+        #login-modal:not(.hidden) { opacity: 1; visibility: visible; display: flex; }
+        .skeleton {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+                    <path d="M2 21c0-3 1.85-5.36 5.08-6C10 14.52 12 13 13 12"></path>
+                </svg>
+                <span class="text-2xl font-semibold tracking-tight text-slate-800">Ruang Sahal</span>
+            </div>
+            <div class="flex items-center gap-8">
+                <a href="#" class="hidden md:block text-slate-600 font-medium hover:text-primary transition-colors">Beranda</a>
+                <button id="btn-open-login" class="btn-admin text-white px-6 py-2 rounded-full font-semibold shadow-sm">Login Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="login-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+        <div id="modal-box" class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+            <header class="mb-8 text-center">
+                <h2 class="serif text-3xl text-slate-900 mb-2">Akses Admin</h2>
+                <p class="text-gray-500 text-sm">Masuk untuk mengelola tulisan Anda.</p>
+            </header>
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-2">Email</label>
+                    <input type="email" id="login-email" required placeholder="admin@ruangsahal.com" class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-primary outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-2">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-primary outline-none transition-all">
+                </div>
+                <div id="login-error" class="hidden text-red-500 text-xs font-medium bg-red-50 p-3 rounded-lg border border-red-100"></div>
+                <div class="pt-4 flex flex-col gap-3">
+                    <button type="submit" id="btn-login-submit" class="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg hover:bg-emerald-600 transition-all flex items-center justify-center">Masuk Sekarang</button>
+                    <button type="button" id="btn-close-login" class="w-full text-gray-400 py-2 text-sm font-medium hover:text-slate-800 transition-colors">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <section class="py-16 md:py-24 px-6 bg-slate-50/30">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="relative bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 mx-auto w-[95%] md:w-fit max-w-2xl mb-10 overflow-hidden flex flex-col items-center px-6 pt-10 pb-8 md:px-12 md:pt-12 md:pb-10 text-center z-10 border border-slate-100">
+                <div class="absolute left-0 top-0 bottom-0 w-3 md:w-4 bg-primary"></div>
+                <svg class="w-10 h-10 md:w-14 md:h-14 text-emerald-200 mb-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <h1 class="text-xl md:text-[28px] font-medium leading-relaxed md:leading-[1.6] text-slate-800 font-sans tracking-tight mb-6">
+                    Ilmu adalah buruan dan tulisan adalah ikatannya,<br class="hidden md:block">
+                    <span class="font-bold inline-block mt-2 md:mt-0">Ikatlah buruanmu dengan tali yang kuat.</span>
+                </h1>
+                <p class="text-sm md:text-base font-bold text-gray-400 tracking-wider">— Imam Syafi'i —</p>
+            </div>
+            <p class="text-gray-500 text-sm md:text-base font-montserrat font-bold uppercase tracking-widest leading-relaxed max-w-2xl mx-auto mt-6">
+                Ruang Sahal adalah tempat Sahal berbagi ilmu, kisah, dan perspektif.
+            </p>
+        </div>
+    </section>
+
+    <section id="tulisan" class="py-16 bg-gray-50/50 min-h-[500px]">
+        <div class="max-w-4xl mx-auto px-4 md:px-6">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-slate-800">Tulisan Terbaru</h2>
+                <div class="h-1 flex-1 mx-6 bg-gray-200 rounded-full opacity-30"></div>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mb-10" id="filter-container">
+                <button class="filter-btn active px-5 py-2 rounded-full border border-gray-200 text-slate-600 text-sm font-medium hover:border-primary hover:text-primary" data-filter="semua">Semua</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 text-slate-600 text-sm font-medium hover:border-primary hover:text-primary" data-filter="Quotes">Quotes</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 text-slate-600 text-sm font-medium hover:border-primary hover:text-primary" data-filter="Artikel">Artikel</button>
+            </div>
+
+            <div id="articles-container" class="grid gap-6">
+                <div class="p-8 bg-white rounded-3xl border border-gray-100 space-y-4">
+                    <div class="h-6 w-3/4 skeleton rounded"></div>
+                    <div class="h-4 w-1/4 skeleton rounded"></div>
+                </div>
+            </div>
+
+            <div id="pagination-controls" class="hidden flex-col items-center gap-5 mt-12 pt-8 border-t border-gray-200/50">
+                <span id="page-info" class="text-sm font-bold text-slate-400 tracking-wider">Halaman 1 dari 1</span>
+                <div class="flex items-center gap-4">
+                    <button id="btn-prev" class="px-6 py-2.5 rounded-full bg-white border border-gray-200 text-slate-600 font-bold hover:border-primary hover:text-primary transition-all disabled:opacity-40 shadow-sm flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        Sebelumnya
+                    </button>
+                    <button id="btn-next" class="px-6 py-2.5 rounded-full bg-white border border-gray-200 text-slate-600 font-bold hover:border-primary hover:text-primary transition-all disabled:opacity-40 shadow-sm flex items-center gap-2">
+                        Selanjutnya
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="empty-state" class="hidden text-center py-20 text-gray-400 italic bg-white rounded-3xl border border-gray-100">
+                Belum ada tulisan di kategori ini.
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-20 bg-white border-t border-gray-100">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 mb-6">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4 font-sans tracking-tight">Mari Berdiskusi & Berkolaborasi</h2>
+            <p class="text-gray-500 text-lg md:text-xl leading-relaxed mb-8">Jika ingin berdiskusi, berbagi perspektif, ide kolaborasi, atau memiliki pertanyaan, silakan hubungi saya.</p>
+            <a href="https://wa.me/6282352240356" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-full font-bold transition-all shadow-xl hover:-translate-y-1">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                Hubungi via WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-10 text-center border-t border-gray-100">
+        <p class="text-gray-400 text-sm">© 2026 Ruang Sahal.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithEmailAndPassword, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXYqecKRQpUTyDzpOU8GgyZETlgQuWKmQ",
+            authDomain: "webproject-6d706.firebaseapp.com",
+            projectId: "webproject-6d706",
+            storageBucket: "webproject-6d706.firebasestorage.app",
+            messagingSenderId: "369405151835",
+            appId: "1:369405151835:web:b81077b8e794a99ff18d7e"
+        };
+
+        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        let allArticlesData = [];
+        let currentFilter = 'semua';
+        let currentPage = 1;
+        const itemsPerPage = 5;
+
+        // Login Handlers
+        const loginModal = document.getElementById('login-modal');
+        document.getElementById('btn-open-login').onclick = () => { loginModal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
+        document.getElementById('btn-close-login').onclick = () => { loginModal.classList.add('hidden'); document.body.style.overflow = 'auto'; };
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login-submit');
+            btn.disabled = true; btn.innerText = 'Memproses...';
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-password').value);
+                window.location.href = "dashboard-admin.html";
+            } catch (err) {
+                const errDiv = document.getElementById('login-error');
+                errDiv.innerText = "Email atau password salah!"; errDiv.classList.remove('hidden');
+                btn.disabled = false; btn.innerText = 'Masuk Sekarang';
+            }
+        };
+
+        // Filter & Paginasi
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active')); e.target.classList.add('active');
+                currentFilter = e.target.getAttribute('data-filter');
+                currentPage = 1; applyFilterAndPaginate();
+            });
+        });
+
+        document.getElementById('btn-prev').addEventListener('click', () => { if (currentPage > 1) { currentPage--; applyFilterAndPaginate(); document.getElementById('tulisan').scrollIntoView(); }});
+        document.getElementById('btn-next').addEventListener('click', () => { currentPage++; applyFilterAndPaginate(); document.getElementById('tulisan').scrollIntoView(); });
+
+        function applyFilterAndPaginate() {
+            let filtered = allArticlesData;
+            if (currentFilter !== 'semua') {
+                filtered = allArticlesData.filter(art => {
+                    let kat = art.kategori || 'Artikel'; if (kat === 'Naratif') kat = 'Artikel';
+                    return kat === currentFilter;
+                });
+            }
+            
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
+            if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * itemsPerPage;
+            renderArticles(filtered.slice(start, start + itemsPerPage), filtered.length);
+            
+            const pCont = document.getElementById('pagination-controls');
+            if (totalPages <= 1) { pCont.classList.add('hidden'); pCont.classList.remove('flex'); } 
+            else {
+                pCont.classList.remove('hidden'); pCont.classList.add('flex');
+                document.getElementById('page-info').innerText = `Halaman ${currentPage} dari ${totalPages}`;
+                document.getElementById('btn-prev').disabled = currentPage === 1;
+                document.getElementById('btn-next').disabled = currentPage === totalPages;
+            }
+        }
+
+        // Init Data: Mengarah langsung ke collection 'articles' yang benar
+        const init = async () => {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                try { await signInWithCustomToken(auth, __initial_auth_token); } catch(e) { await signInAnonymously(auth); }
+            } else if (!auth.currentUser) { await signInAnonymously(auth); }
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    onSnapshot(collection(db, 'articles'), (snapshot) => {
+                        const articles = [];
+                        snapshot.forEach(doc => articles.push({ id: doc.id, ...doc.data() }));
+                        articles.sort((a, b) => {
+                            const tB = b.tanggal?.seconds || 0; const tA = a.tanggal?.seconds || 0;
+                            if (tB !== tA) return tB - tA;
+                            return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0);
+                        });
+                        allArticlesData = articles; applyFilterAndPaginate();
+                    });
+                }
+            });
+        };
+
+        function renderArticles(articles, total) {
+            const container = document.getElementById('articles-container');
+            const empty = document.getElementById('empty-state');
+            if (total === 0) { container.innerHTML = ''; empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden'); container.innerHTML = '';
+
+            articles.forEach(art => {
+                const date = art.tanggal ? new Date(art.tanggal.seconds * 1000).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                let kat = art.kategori || 'Artikel'; if (kat === 'Naratif') kat = 'Artikel';
+                const tempDiv = document.createElement("div"); tempDiv.innerHTML = art.isi || '';
+                const snippet = tempDiv.textContent || tempDiv.innerText || "Tidak ada cuplikan.";
+                
+                // Mengubah gambar cover menjadi kotak (persegi) di sebelah kiri
+                const coverHTML = art.cover_url ? `<img src="${art.cover_url}" class="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 object-cover rounded-xl md:rounded-2xl shrink-0 shadow-sm" alt="Cover">` : '';
+
+                const card = document.createElement('div');
+                // Mengubah flex-col menjadi flex-row agar tata letak selalu menyamping (kiri-kanan) di semua layar
+                card.className = 'article-card p-4 md:p-6 bg-white rounded-3xl border border-gray-100 cursor-pointer group flex flex-row items-center gap-4 md:gap-6 shadow-sm';
+                card.innerHTML = `
+                    ${coverHTML}
+                    <div class="flex-1 flex flex-col justify-center overflow-hidden">
+                        <div class="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+                            <span class="px-2 md:px-3 py-1 bg-emerald-50 text-primary text-[10px] md:text-xs font-bold uppercase tracking-wider rounded-lg border border-emerald-100 shrink-0">${kat}</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-medium truncate">${date}</span>
+                        </div>
+                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-slate-800 mb-1 md:mb-2 group-hover:text-primary transition-colors truncate md:whitespace-normal md:line-clamp-2">${art.judul || 'Tanpa Judul'}</h3>
+                        <p class="text-xs md:text-sm text-slate-600 line-clamp-2 leading-relaxed">${snippet}</p>
+                    </div>
+                `;
+                card.onclick = () => window.location.href = `baca-artikel.html?id=${art.id}`;
+                container.appendChild(card);
+            });
+        }
+        init();
+    </script>
+</body>
+</html>
