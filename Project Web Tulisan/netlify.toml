@@ -1,3 +1,7 @@
 [[edge_functions]]
   function = "share"
-  path = "/*"
+  path = "/baca-artikel" # Hanya jalankan fungsi ini saat orang buka artikel
+
+[build]
+  publish = "dist"
+  command = "npm run build"
